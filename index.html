@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Прості інструкції — Codex версія</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f0f2f5;
+    }
+    h1 {
+      color: #343a40;
+    }
+    .panel, .form-section, .command-input {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    textarea, select, input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Прості інструкції — Codex версія (демо)</h1>
+
+  <div class="command-input">
+    <h3>Введіть команду:</h3>
+    <textarea id="command" rows="3" placeholder="Наприклад: Додай інструкцію: Касир — Що робити, якщо не працює термінал"></textarea>
+    <button class="button" onclick="parseCommand()">Виконати</button>
+    <div id="codex-confirmation" style="margin-top: 10px; color: green; display: none;">✅ Інструкцію додано!</div>
+  </div>
+
+  <div class="panel">
+    <h2>Шаурміст</h2>
+    <ul id="list-shaurma">
+      <li>Розігріти гриль до 280°C</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>Касир</h2>
+    <ul id="list-kasyr">
+      <li>Прийняти оплату карткою або готівкою</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>Заготівельник</h2>
+    <ul id="list-zagot">
+      <li>Перевірити залишки на складі</li>
+    </ul>
+  </div>
+
+  <script>
+    function parseCommand() {
+      const input = document.getElementById('command').value.trim();
+      const patterns = [
+        { key: 'Шаурміст', id: 'list-shaurma' },
+        { key: 'Касир', id: 'list-kasyr' },
+        { key: 'Заготівельник', id: 'list-zagot' }
+      ];
+
+      for (const p of patterns) {
+        if (input.includes(p.key)) {
+          const parts = input.split('—');
+          if (parts.length > 1) {
+            const text = parts[1].trim();
+            const li = document.createElement('li');
+            li.textContent = text;
+            document.getElementById(p.id).appendChild(li);
+            document.getElementById('codex-confirmation').style.display = 'block';
+            setTimeout(() => {
+              document.getElementById('codex-confirmation').style.display = 'none';
+              document.getElementById('command').value = '';
+            }, 2000);
+            return;
+          }
+        }
+      }
+      alert('Не вдалося розпізнати команду. Спробуйте: Додай інструкцію: [Роль] — [Текст]');
+    }
+  </script>
+</body>
+</html>
